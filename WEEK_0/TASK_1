@@ -1,42 +1,46 @@
-Overview
-This summary is based on a lecture by Kunal Ghosh from VLSI System Design (VSD) about designing ASIC/SoC chips. It explains the step-by-step process from idea to finished product using tools like OpenLANE and Sky130 PDK. The focus is on making sure the chip works the same way at every stage, checked with C language test programs.
-Design Flow Stages (O0-O4)
-Each step builds on the last, with checks to ensure the design stays correct.
+**Overview**
 
-O0: GCC - Start by writing a basic model in C and using GCC to check it.
+//This summary is based on a lecture by Kunal Ghosh from VLSI System Design (VSD) about designing ASIC/SoC chips.
+//It explains the step-by-step process from idea to finished product using tools like OpenLANE and Sky130 PDK. 
+//The focus is on making sure the chip works the same way at every stage, checked with C language test programs.
 
-Explanation: This is like drafting the chip’s plan in simple C code. GCC (a compiler) turns it into something we can test, setting the starting point for the design.
+\\ Design Flow Stages (O0-O4) \\
 
+---> Each step builds on the last, with checks to ensure the design stays correct. <--------
 
-O1: Specs (C Model) - Write detailed instructions in C and test them with a program.
+1) O0: GCC - Start by writing a basic model in C and using GCC to check it.
 
-Explanation: Here, we list what the chip should do (like adding numbers or showing pictures). A test program in C checks if it works as planned before moving to hardware.
-
-
-O2: RTL (Verilog) - Turn the plan into hardware code:
-
-Processor: Change Verilog code into a list of gates (like switches).
-
-Explanation: The processor part is written in Verilog (a hardware language) and turned into basic building blocks (gates) that the chip can use.
+  Explanation: This is like drafting the chip’s plan in simple C code. GCC (a compiler) turns it into something we can test, setting the starting point for the design.
 
 
-Peripherals/IPs: Use ready-made blocks that can be turned into gates.
+2) O1: Specs (C Model) - Write detailed instructions in C and test them with a program.
 
-Explanation: These are pre-built parts (like memory or USB) that fit into the design and get converted to gates.
-
-
-Analog IPs: Keep as a basic model using transistors (no gate conversion).
-
-Explanation: Analog parts (for things like sound) stay as models because they use transistors, which can’t be turned into gates like digital parts.
+  Explanation: Here, we list what the chip should do (like adding numbers or showing pictures). A test program in C checks if it works as planned before moving to hardware.
 
 
+3) O2: RTL (Verilog) - Turn the plan into hardware code:
 
 
-O3: SoC Integration - Put all parts together, plan the layout, and create a final design file. Check it with rules.
+4) Processor: Change Verilog code into a list of gates (like switches).
 
-Explanation: All pieces (processor, peripherals, analog) are combined into one chip. We plan where everything goes, connect them, and make a file (GDSII) for manufacturing. Rules (DRC/LVS) ensure it’s correct.
+  Explanation: The processor part is written in Verilog (a hardware language) and turned into basic building blocks (gates) that the chip can use.
 
 
-O4: Peripherals & Apps - Test with parts running at 100-130 MHz for devices like iWatch or Arduino.
+5) Peripherals/IPs: Use ready-made blocks that can be turned into gates.
 
-Explanation: The final chip is tested with its parts (running at a speed of 100-130 MHz) to see if it works in real things like smartwatches, Arduino boards, TVs, or air conditioners.
+  Explanation: These are pre-built parts (like memory or USB) that fit into the design and get converted to gates.
+
+
+6) Analog IPs: Keep as a basic model using transistors (no gate conversion).
+
+ Explanation: Analog parts (for things like sound) stay as models because they use transistors, which can’t be turned into gates like digital parts.
+
+
+7) O3: SoC Integration - Put all parts together, plan the layout, and create a final design file. Check it with rules.
+
+ Explanation: All pieces (processor, peripherals, analog) are combined into one chip. We plan where everything goes, connect them, and make a file (GDSII) for manufacturing. Rules (DRC/LVS) ensure it’s correct.
+
+
+8) O4: Peripherals & Apps - Test with parts running at 100-130 MHz for devices like iWatch or Arduino.
+
+  Explanation: The final chip is tested with its parts (running at a speed of 100-130 MHz) to see if it works in real things like smartwatches, Arduino boards, TVs, or air conditioners.
