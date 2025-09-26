@@ -1,1 +1,59 @@
+//iverilog Simulation Workflow
+//Steps Performed
+
+🎗️Switched to root user using su.
+
+1) Navigated to project directory:
+
+    /home/vsd/VLSI/sky130RTLDesignAndSynthesisWorkshop/verilog_files
+    
+
+2) Verified the available files using ls. Found:
+
+    Design file → good_mux.v
+    
+    Testbench file → tb_good_mux.v
+
+
+3) Compiled design + testbench with Icarus Verilog:
+
+    iverilog good_mux.v tb_good_mux.v    
+    → Output executable: a.out
+
+
+4) Ran the simulation:
+
+    ./a.out    
+    → Generated waveform file: tb_good_mux.vcd
+
+
+5) Opened waveform in GTKWave:
+
+    gtkwave tb_good_mux.vcd
+
+-----------------********************************************************************************************************************************************************------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
