@@ -1,0 +1,14 @@
+# Read the Verilog file
+read_verilog dff_const3.v
+
+# Perform synthesis with the specified top module
+synth -top dff_const3
+
+# Map DFF cells to the liberty file
+dfflibmap -liberty ../lib/sky130_fd_sc_hd__tt_025C_1v80.lib
+
+# Generate a visual representation of the design
+show
+
+# Exit Yosys
+exit
