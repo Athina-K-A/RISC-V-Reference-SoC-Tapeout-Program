@@ -1,0 +1,36 @@
+// Yosys Synthesis (synth -top multiple_module_opt)
+*******************************************
+* Top module: multiple_module_opt         *
+
+* Submodules: sub_module1 and sub_module2 *
+*******************************************
+
+-Modules: Only multiple_module_opt and sub_module1
+
+-Cells: AND, OR gates, plus one instantiation of su-b_module1
+
+1 — Flattening (flatten)
+
+Flattening replaced hierarchy: expanded sub_module1 inside multiple_module_opt.
+This left only one module: multiple_module_opt.
+Hierarchy now gone → easier for gate-level mapping in ABC.
+
+2 — Cleaning (opt_clean -purge)
+
+Removed any leftover unused wires or cells after flattening.
+Purged the modules that were not used after flattening.
+
+3 — Technology Mapping with ABC (abc -liberty …)
+
+ABC read your flattened netlist and mapped logic gates to your SkyWater library cells.
+Key results from ABC:
+  -AND gates: sky130_fd_sc_hd__and2_1
+  -OR gates: sky130_fd_sc_hd__or2_1
+  -XOR gates (from sub_module2, before removal)
+  -Internal wiring minimized
+  -ABC logs mention skipping certain cells (like decaps, buffers, sequential cells without combinational logic). This is normal — ABC ignores sequential or non-logic cells during mapping.
+
+4 — Output
+
+At the end of ABC mapping:
+Netlist size is smaller with only necessary logic remaining.
