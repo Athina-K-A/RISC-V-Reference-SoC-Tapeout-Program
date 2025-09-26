@@ -34,10 +34,49 @@
 -----------------********************************************************************************************************************************************************------------------
 
 
+//Yosys Workflow Summary for good_mux.v
+
+1) open Yosys
+
+    yosys
 
 
+2) Read the Verilog file
+
+    read_verilog good_mux.v
+    Parsed and generated RTLIL for module good_mux.
 
 
+3) Run synthesis
+
+    synth -top good_mux
+    Set good_mux as the top module.    
+    Converted processes to netlists.    
+    Optimized expressions, cleaned unused wires.    
+    Mapped to technology primitives.
+        
+
+4) Technology mapping with ABC
+
+    Extracted netlist and mapped using Berkeley ABC.
+    
+    Result: 1 MUX cell, 3 inputs, 1 output.
+    
+    Final statistics
+    
+    === good_mux ===
+    Number of wires:        4
+    Number of wire bits:    4
+    Number of cells:        1
+      $_MUX_                1
+
+
+///Design is clean, optimized, and technology-mapped successfully.
+
+5) Exit Yosys
+    exit
+
+-----------------********************************************************************************************************************************************************------------------
 
 
 
