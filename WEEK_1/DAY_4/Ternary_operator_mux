@@ -1,0 +1,48 @@
+1. Commands for RTL Design Simulation
+
+a) These commands compile and simulate your Verilog RTL design using Icarus Verilog and visualize the output with GTKWave.
+
+     # Navigate to the working directory:
+       bashcd /home/vsd/VLSI/sky130RTLDesignAndSynthesisWorkshop/verilog_files
+    
+     # Compile Verilog files (RTL module + testbench):
+       bashiverilog -o sim.out ternary_operator_mux.v tb_ternary_operator_mux.v
+    
+      //Compiles ternary_operator_mux.v (RTL) and tb_ternary_operator_mux.v (testbench).
+      //Generates the VCD file (tb_ternary_operator_mux.vcd).
+    
+    
+     # View waveform in GTKWave:
+       gtkwave tb_ternary_operator_mux.vcd
+
+
+2. Commands for Yosys Synthesis
+
+a) These commands synthesize the RTL design into a netlist using Yosys, mapping it to the SkyWater 130nm library.
+
+   Start Yosys: yosys
+
+-->Yosys commands (inside Yosys prompt):
+
+    # read_liberty -lib ../lib/sky130_fd_sc_hd__tt_025C_1v80.lib
+
+    # Read the Verilog RTL file
+    read_verilog ternary_operator_mux.v
+    
+    # Synthesize the design, set top module
+    synth -top ternary_operator_mux
+    
+    # Map to SkyWater library using ABC
+    abc -liberty ../lib/sky130_fd_sc_hd__tt_025C_1v80.lib
+    
+    # Write the synthesized netlist
+    write_verilog -noattr ternary_operator_mux_net.v
+    
+    # Visualize the design 
+    show
+    
+    # Exit Yosys
+    exit
+
+
+
