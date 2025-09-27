@@ -1,0 +1,79 @@
+//iverilog Simulation Workflow
+//Steps Performed
+
+🎗️Switched to root user using su.
+
+1) Navigated to project directory:
+
+    /home/vsd/VLSI/sky130RTLDesignAndSynthesisWorkshop/verilog_files
+    
+
+2) Verified the available files using ls. Found:
+
+    Design file → good_mux.v
+    
+    Testbench file → tb_good_mux.v
+
+
+3) Compiled design + testbench with Icarus Verilog:
+
+    iverilog good_mux.v tb_good_mux.v    
+    → Output executable: a.out
+
+
+4) Ran the simulation:
+
+    ./a.out    
+    → Generated waveform file: tb_good_mux.vcd
+
+
+5) Opened waveform in GTKWave:
+
+    gtkwave tb_good_mux.vcd
+
+-----------------********************************************************************************************************************************************************------------------
+
+
+//Yosys Workflow Summary for good_mux.v
+
+1) open Yosys
+
+    yosys
+
+
+2) Read the Verilog file
+
+    read_verilog good_mux.v
+    Parsed and generated RTLIL for module good_mux.
+
+
+3) Run synthesis
+
+    synth -top good_mux
+    Set good_mux as the top module.    
+    Converted processes to netlists.    
+    Optimized expressions, cleaned unused wires.    
+    Mapped to technology primitives.
+        
+
+4) Technology mapping with ABC
+
+    Extracted netlist and mapped using Berkeley ABC.
+    
+    Result: 1 MUX cell, 3 inputs, 1 output.
+    
+    Final statistics
+    
+    === good_mux ===
+    Number of wires:        4
+    Number of wire bits:    4
+    Number of cells:        1
+      $_MUX_                1
+
+
+///Design is clean, optimized, and technology-mapped successfully.
+
+5) Exit Yosys
+    exit
+
+-----------------********************************************************************************************************************************************************------------------
