@@ -1,0 +1,145 @@
+# What is a System-on-Chip (SoC)?
+  
+  A System-on-Chip (SoC) is a single integrated circuit that contains most of the essential parts of a computer system. 
+  Instead of using separate chips for CPU, memory, and I/O, everything is integrated on one chip.
+
+# Benefits:
+
+  1. Smaller size and lower cost
+  
+  2. Higher performance (modules are closely connected)
+  
+  3. Lower power consumption (important for mobiles/IoT)
+  
+  4. SoCs are widely used in smartphones, IoT devices, and embedded systems.
+
+# Components of a Typical SoC
+
+  1. CPU (Processor) – Executes instructions and controls the overall system.
+  
+  2. Memory – RAM (temporary storage) + ROM/Flash (permanent storage).
+  
+  3.Peripherals – Interfaces like UART, GPIO, SPI, I²C, timers, etc. that connect the chip to the outside world.
+  
+  4. Interconnect (Bus/NoC) – Communication path that links CPU, memory, and peripherals.
+  
+  5. Together, these form a complete “mini-computer” on a chip.
+
+# Why BabySoC?
+  
+  1. Real-world SoCs (ARM, RISC-V, etc.) are too complex for beginners. BabySoC is a simplified model that:
+  
+  2. Contains only essential building blocks.
+  
+  3. Focuses on learning concepts instead of advanced implementation.
+  
+  4. Helps understand integration and data flow inside an SoC.
+  
+  5. BabySoC is like a training SoC – a small model to practice and build a strong foundation.
+
+# The Role of Functional Modelling
+
+ ** Chip design has multiple stages:
+  
+      1.Functional Modelling – check behavior and logic (high-level).
+      
+      2.RTL Design – implement with Verilog/VHDL.
+      
+      3.Synthesis & Physical Design – map to gates and layout.
+      
+      4.Functional modelling is done first because:
+      
+      5.It verifies system behavior early.
+      
+      6.Errors are caught before costly design steps.
+      
+      7.Easier to debug than RTL or physical design.
+
+# In BabySoC:
+
+---> We use Icarus Verilog for simulation.
+
+---> We use GTKWave to visualize waveforms.
+
+
+
+// Practical (Functional Modelling with Icarus Verilog & GTKWave) //
+
+Step 1 – Install Tools
+
+  On Linux (Ubuntu/Debian-based):
+  
+  sudo apt-get update
+  sudo apt-get install iverilog gtkwave
+  
+  
+  On Windows → Use WSL (Linux) or download from:
+  
+  Icarus Verilog: http://iverilog.icarus.com/
+  
+  GTKWave: http://gtkwave.sourceforge.net/
+
+
+Step 2 – Clone the Repository
+
+  Clone the BabySoC reference repo:
+  
+  git clone https://github.com/hemanthkumardm/SFAL-VSD-SoC-Journey.git
+  cd SFAL-VSD-SoC-Journey/11.\ Fundamentals\ of\ SoC\ Design/BabySoC
+
+
+Step 3 – Compile the Verilog Code
+
+  iverilog -o babysoc_tb babysoc.v babysoc_tb.v
+  
+  babysoc.v → BabySoC design file.
+  
+  babysoc_tb.v → Testbench file.
+  
+  Output is an executable babysoc_tb.
+
+
+Step 4 – Run the Simulation
+
+  vvp babysoc_tb
+  
+  This will generate a .vcd file (waveform dump), e.g., babysoc.vcd.
+
+
+Step 5 – View the Waveforms in GTKWave
+  gtkwave babysoc.vcd
+    
+  Inside GTKWave:
+  
+  Add signals from CPU, memory, peripherals, and bus.
+  
+  Observe instruction execution, memory read/write, and peripheral activity.
+
+
+Step 6 – Record Observations
+
+//Example observations you can include in GitHub:
+
+    CPU fetches instructions from memory.
+    
+    Control signals toggle correctly during execution.
+    
+    Data bus shows read/write transactions.
+    
+    UART/Peripheral signals show activity.
+
+
+********************************************************************************************************************************************************************************************************************************************
+
+## SUMMARY 
+
+In Week 2, we explored the fundamentals of System-on-Chip (SoC) design and practiced functional modelling of BabySoC using simulation tools.
+
+   1. From the theoretical part, we learned that an SoC integrates CPU, memory, peripherals, and interconnects into a single chip, enabling compact, cost-efficient, and high-performance computing systems. 
+   2. BabySoC serves as a simplified model to help understand these concepts without the complexity of real-world SoCs.
+   3. Functional modelling plays a crucial role in verifying system behavior before moving to RTL design and physical implementation.
+   4. The practical part involved using Icarus Verilog to simulate the BabySoC design and GTKWave to observe waveform outputs. 
+   5. This process helped visualize how the CPU fetches and executes instructions, how memory and peripherals interact, and how signals flow through the SoC.
+   6. This exercise gave a solid foundation in SoC concepts and demonstrated how functional modelling is an essential first step in the hardware design process. 
+   7. It prepares us for more advanced stages like RTL development and physical design, forming the base for future SoC projects.
+********************************************************************************************************************************************************************************************************************************************
