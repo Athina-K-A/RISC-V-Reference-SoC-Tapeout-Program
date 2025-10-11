@@ -1,0 +1,74 @@
+
+Objective
+
+The main goal of this week’s task was to understand how to perform Gate-Level Simulation (GLS) after synthesis, validate that the synthesized design behaves exactly like the RTL version, and get familiar with Static Timing Analysis (STA) using the OpenSTA tool.
+
+
+
+Part 1 – Post-Synthesis GLS
+
+I started with the BabySoC design that was already verified functionally in Week 2.
+Using Yosys, I synthesized the RTL file to generate the gate-level netlist.
+After synthesis, I performed GLS using Icarus Verilog with the same testbench that I used for RTL simulation.
+
+Two waveform files were created – one from the RTL simulation and one from the gate-level simulation.
+Both waveforms were checked using GTKWave, and the outputs matched perfectly. 
+This confirmed that the synthesized design preserves the same functionality as the RTL design.
+
+Outputs obtained::
+
+    Synthesis log file (synth_babysoc.log)
+    
+    Gate-level netlist (synth_baby_soc.v)
+    
+    GLS waveform screenshots
+    
+    Comparison showing GLS = Functional outputs
+
+
+Part 2 – Fundamentals of STA
+
+To understand timing analysis, I went through the “STA Fundamentals” course.
+From that, I learned the importance of setup and hold checks, slack, and clock definitions in digital design.
+
+Key takeaways:
+
+  STA checks timing without running simulations.
+  
+  Setup check ensures data arrives before the active clock edge.
+  
+  Hold check ensures data remains stable after the clock edge.
+  
+  Slack = Required time – Arrival time. Positive slack means timing is met; negative slack means violation.
+  
+  Proper clock definitions and path-based analysis are essential for identifying critical timing paths.
+  
+  A one-page note summarizing these points is added as STA_summary.pdf.
+
+
+Part 3 – Timing Analysis with OpenSTA
+
+In this part, I used OpenSTA to perform basic static timing analysis on the synthesized netlist.
+I loaded the Liberty file, the synthesized Verilog netlist, and the constraint (SDC) file into OpenSTA using a TCL script.
+Then I generated setup and hold timing reports, and identified the worst-case (critical) path in the design.
+
+The tool provided timing details such as data arrival time, required time, and slack.
+A positive slack value indicated that the timing requirements were met.
+I also generated a timing graph for the critical path and saved it along with the timing reports.
+
+Outputs obtained::
+
+  OpenSTA TCL script (opensta_cmds.tcl)
+  
+  Timing reports (opensta_top10.txt, opensta_worst_path.txt)
+  
+  Graph screenshot with my user ID and timestamp
+  
+  Observation note describing the critical path and slack meaning
+
+
+Observations and Conclusion
+
+The GLS outputs were functionally identical to the RTL outputs, proving that the synthesis process did not alter the logic behavior.
+The STA reports helped me understand how timing margins (slack) determine the maximum operating frequency of a design.
+Through this exercise, I gained a clear idea of how functional correctness and timing verification together ensure a design is ready for implementation.
