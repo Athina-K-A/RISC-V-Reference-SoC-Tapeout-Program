@@ -1,0 +1,199 @@
+1. Pre-Layout Timing & Why a Good Clock Tree Matters
+
+Before placement and routing, timing is analyzed with ideal clocks.
+The goal is to ensure:
+
+Combinational delay fits within the clock period
+
+Setup/hold checks pass
+
+No timing bottlenecks exist before real routing
+
+A balanced clock tree is crucial because uneven clock arrival causes skew, directly affecting timing closure.
+
+2. Understanding Tracks & Why Standard Cells Must Align
+
+Routing tools follow fixed metal tracks.
+So, while designing a cell in Magic:
+
+Rules:
+
+Ports (input/output pins) must lie exactly at intersections of vertical & horizontal routing tracks.
+
+The cell width & height must be odd multiples of the track pitch, so routing tools can legally drop wires.
+
+Track pitch details are taken from this file:
+
+pdk/sky130/libs.tech/openlane/sky130_fd_sc_hd/track.info
+
+
+Example (li1, metal1, metal2):
+
+Horizontal: 0.23 µm, 0.46 µm
+
+Vertical: 0.17 µm, 0.34 µm
+
+Magic’s grid command is used to overlay these tracks so you can align ports correctly.
+
+3. LEF Extraction from Magic Layout
+
+Once the cell layout is ready:
+
+Steps:
+
+Open the .mag cell:
+
+magic -T sky130A.tech sky130_vsdinv.mag &
+
+
+Define port types, directions, and for power/ground set:
+
+Attach to layer: Metal1
+
+Finally generate LEF:
+
+lef write
+
+
+The output .lef is now ready to be used inside OpenLane/picorv32a.
+
+4. Adding Custom LEF to picorv32a
+
+Move your LEF file to the design’s src folder:
+
+cp sky130_vsdinv.lef openlane/designs/picorv32a/src/
+
+
+Modify config.tcl to include it:
+
+set ::env(EXTRA_LEFS) "$::env(DESIGN_DIR)/src/sky130_vsdinv.lef"
+
+5. Running Synthesis with Custom Cell
+
+Inside OpenLane interactive mode:
+
+./flow.tcl -interactive
+package require openlane 0.9
+prep -design picorv32a
+set lefs [glob $::env(DESIGN_DIR)/src/*.lef]
+add_lefs -src $lefs
+run_synthesis
+
+6. Introduction to Delay Tables
+
+A delay table records:
+
+input transition (slew)
+
+output load (capacitance)
+vs
+
+propagation delay
+
+Because buffers in the clock tree drive different loads, the delay varies.
+To characterize, a single buffer is taken and simulated for many combinations of:
+
+input_slew = 10–100 ps
+output_load = multiple fF values
+
+
+The tool then interpolates missing values during STA.
+
+7. Using Delay Tables During STA
+
+Example:
+
+Buffer1 input slew = 40 ps
+
+Output load = 60 fF
+
+Delay falls between entries (x9–x10).
+OpenSTA interpolates the exact delay.
+
+Total latency example:
+
+Delay_total = Delay_buf1 + Delay_buf2
+
+
+If loads are equal on symmetric branches, skew = 0.
+
+8. Improving Slack in Synthesis
+
+To optimize timing:
+
+set ::env(SYNTH_STRATEGY) "DELAY 3"
+set ::env(SYNTH_SIZING) 1
+set ::env(SYNTH_MAX_FANOUT) 4
+run_synthesis
+
+
+This increases cell sizing & buffering, improving slack.
+
+9. ECO (Engineering Change Order) for Timing Fix
+
+If a weak gate (e.g., OR2) drives heavy loads:
+
+Commands:
+report_net -connections <net>
+replace_cell <inst> sky130_fd_sc_hd__or3_4
+report_checks -fields {net cap slew input_pins} -digits 4
+
+
+Slack improves after upsizing the driver.
+
+10. Clock Tree Synthesis (TritonCTS)
+
+CTS inserts:
+
+Clock buffers (balanced rise/fall)
+
+Routing
+
+Minimizes skew
+
+Commands:
+
+init_floorplan
+place_io
+tap_decap_or
+run_placement
+unset ::env(LIB_CTS)
+run_cts
+
+
+TritonCTS outputs:
+
+design.cts.def
+
+11. Shielding & Crosstalk
+
+Clock nets are highly sensitive. If a switching signal is nearby, coupling capacitance can cause:
+
+Delta delay
+
+Glitch
+
+Skew variation
+
+Solution → Shielding
+
+Insert a grounded/VDD wire between the victim and aggressor.
+
+12. STA with Real Clocks
+
+With buffers and wires in clock tree:
+
+Total path delay:
+  (combinational_delay + launch_clock_delay) 
+<
+  (clock_period + capture_clock_delay)
+
+
+This introduces skew:
+
+Skew = (delay_launch_clk – delay_capture_clk)
+
+
+And after setup time (S) and jitter/uncertainty (US):
+
+θ < (T – S – US + skew)
