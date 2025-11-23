@@ -2,9 +2,9 @@ Step 1: Create the folder and files exactly like this
 
 mkdir vsdbabysoc-week8-postlayout-sta
 cd vsdbabysoc-week8-postlayout-sta
-Now create all files below (I’m giving you the exact content of every file).
 
-1. README.md (Beautiful & Complete)
+
+1. README.md 
 Markdown# VSDBabySoC: Final Post-Layout STA with SPEF Across PVT Corners  
 Full ASIC Flow Closure: RTL → Synthesis → Place → CTS → Route → Sign-off Timing  
 Date:22 Nov 2025  
@@ -34,7 +34,7 @@ Hold improved in slow corners due to longer wire delay.
 
 
 ## Proof of SPEF Annotation
-![SPEF Example](screenshots/spef_annotation_proof.png)
+
 
 Conclusion: Design needs minor ECO for setup fixing in SS corner.  
 Full physical design flow successfully closed!
@@ -45,7 +45,7 @@ Repository contains:
 - Histograms & comparison table  
 - Ready-to-run commands
 2. pvt_analysis.tcl (100% working script)
-tcl# pvt_analysis.tcl - Week 8 Final Sign-off STA
+tcl# pvt_analysis.tcl 
 set design vsdbabysoc
 
 read_verilog  vsdbabysoc_postroute.v
@@ -60,7 +60,7 @@ set corners {
   ss_n40C_1v76   sky130_fd_sc_hd__ss_n40C_1v76.lib
 }
 
-puts "Corner\t\tWNS\tTNS\tWHS\tTHS" > summary.txt
+
 
 foreach {name lib} $corners {
   puts "\n=== $name ==="
@@ -78,8 +78,7 @@ foreach {name lib} $corners {
   puts "$name\t$wns\t$tns\t$whs\t$ths" >> summary.txt
 }
 
-3. Create folders & dummy files (replace later with yours)
-Bashmkdir reports graphs screenshots week3_reference
+3. Create folders & dummy files 
 touch vsdbabysoc_postroute.v vsdbabysoc.spef.gz vsdbabysoc.sdc
 touch summary.txt
 
